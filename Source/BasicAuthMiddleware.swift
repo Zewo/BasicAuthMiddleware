@@ -40,11 +40,11 @@ public struct BasicAuthMiddleware: Middleware {
     let type: AuthenticationType
 
     public init(realm: String? = nil, authenticate: (username: String, password: String) throws -> AuthenticationResult) {
-        self.type = .server(realm: realm, authenticate: authenticate)
+        type = .server(realm: realm, authenticate: authenticate)
     }
 
     public init(username: String, password: String) {
-        self.type = .client(username: username, password: password)
+        type = .client(username: username, password: password)
     }
 
     public func respond(to request: Request, chainingTo chain: Responder) throws -> Response {
@@ -63,7 +63,7 @@ public struct BasicAuthMiddleware: Middleware {
         } else {
             deniedResponse = Response(status: .unauthorized)
         }
-        
+
         guard let authorization = request.authorization else {
             return deniedResponse
         }
