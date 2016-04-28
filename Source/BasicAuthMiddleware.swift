@@ -70,7 +70,7 @@ public struct BasicAuthMiddleware: Middleware {
 
         let tokens = authorization.split(separator: " ")
 
-        if tokens.count != 2 || tokens[0] != "Basic" {
+        guard tokens.count == 2 || tokens.first == "Basic" else {
             return deniedResponse
         }
 
@@ -78,7 +78,7 @@ public struct BasicAuthMiddleware: Middleware {
         let decodedCredentials = try String(data: decodedData)
         let credentials = decodedCredentials.split(separator: ":")
 
-        if credentials.count != 2 {
+        guard credentials.count == 2 else {
             return deniedResponse
         }
 
